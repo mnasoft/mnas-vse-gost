@@ -89,7 +89,7 @@
       (redirect "/select"))
 
 (defun gost-start()
-  (connect-toplevel "namatv" "namatv" "" "localhost") ;; Postmaster connaction
+  (connect-toplevel "namatv" "namatv" mnas-passwd:POSTGRESS@MNASOFT-PI "localhost") ;; Postmaster connaction
   (setf *gost-acceptor* (start (make-instance 'easy-acceptor :port 8000)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
   (define-url-fn (show)

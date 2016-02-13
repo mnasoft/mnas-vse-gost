@@ -5,7 +5,7 @@
   :author "Your Name <your.name@example.com>"
   :license "Specify license here"
   :serial t
-  :depends-on (#:mnas-string #:postmodern #:hunchentoot #:cl-who)
+  :depends-on (#:mnas-string #:mnas-passwd #:postmodern #:hunchentoot #:cl-who)
   :components ((:file "package")
                (:file "mnas-vse-gost")))
 
