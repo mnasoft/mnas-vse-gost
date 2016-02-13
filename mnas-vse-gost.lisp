@@ -15,6 +15,10 @@
 (setf (html-mode) :HTML5)
 
 (defun gost-stop()
+  "Выполняет:
+2. Остановку web-сервера: *gost-acceptor*
+3. Отсоединение от базы данных
+"
   (clean-dispatch-table)
   (stop *gost-acceptor*)
   (disconnect-toplevel)) ;; Postmaster disconnection
@@ -26,16 +30,21 @@
 
 
 (defun do-show-gost-table (name-str designation-str description-str)
+  "Выполняет формирование содержимого таблицы содержащей в каждой своей строке:
+1. Обозначени   ГОСТ (designation);
+2. Наименование ГОСТ (name);
+-- 3. Описание     ГОСТ (description).
+"
   (let ((out (make-string-output-stream))
-	(lines 0)
-	)
-    (setf lines (second(multiple-value-list (doquery (:select 'designation 'name 'local_path :from 'gost :where
-		      (:and (:ilike 'name (string-prepare-to-query name-str))
-			    (:ilike 'designation (string-prepare-to-query designation-str))
-			    (:ilike 'description (string-prepare-to-query description-str))))
-	(designation name local_path)
-      (format out "<tr><td><a href='~A'>~A</a></td><td>~A</td></tr>~%"
-	      (concatenate 'string "http://vsegost.ddns.net/static/" local_path "gost.pdf") designation name)))))
+	(lines 0))
+    (setf lines (second (multiple-value-list
+			 (doquery (:select 'designation 'name 'local_path :from 'gost :where
+					   (:and (:ilike 'name (string-prepare-to-query name-str))
+						 (:ilike 'designation (string-prepare-to-query designation-str))
+						 (:ilike 'description (string-prepare-to-query description-str))))
+				  (designation name local_path)
+				  (format out "<tr><td><a href='~A'>~A</a></td><td>~A</td></tr>~%"
+					  (concatenate 'string "http://vsegost.ddns.net/static/" local_path "gost.pdf") designation name)))))
     (format nil "<table>~A</table>~%<p>Всего найдено ~A записей</p>" (get-output-stream-string out) lines)))
 
 (defmacro standard-page ((&key title)  &body body)
@@ -80,7 +89,7 @@
       (redirect "/select"))
 
 (defun gost-start()
-  (connect-toplevel "namatv" "namatv" "GT{ktdfyblb 6" "localhost") ;; Postmaster connaction
+  (connect-toplevel "namatv" "namatv" "" "localhost") ;; Postmaster connaction
   (setf *gost-acceptor* (start (make-instance 'easy-acceptor :port 8000)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
   (define-url-fn (show)
