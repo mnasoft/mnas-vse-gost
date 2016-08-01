@@ -1,33 +1,19 @@
 ;;;; mnas-vse-gost.lisp
 
 (in-package #:mnas-vse-gost)
-
 ;;; "mnas-vse-gost" goes here. Hacks and glory await!
 
-;;;;(asdf:oos 'asdf:load-op :mnas-vse-gost) (use-package :mnas-vse-gost)
-;;;;(asdf:oos 'asdf:load-op :mnas-string)   (use-package :mnas-string)
-;;;;(asdf:oos 'asdf:load-op :hunchentoot)   (use-package :hunchentoot)
-;;;;(asdf:oos 'asdf:load-op :cl-who)        (use-package :cl-who)
-;;;;(asdf:oos 'asdf:load-op :postmodern)    (use-package :postmodern)
-
-(defparameter *gost-acceptor* nil)
-
-(setf (html-mode) :HTML5)
+(defparameter *mnas-vse-gost-dispatch-table* nil
+  "Таблица диспетчеризации проекта adiabatic-temperature")
 
 (defun gost-stop()
   "Выполняет:
-2. Остановку web-сервера: *gost-acceptor*
-3. Отсоединение от базы данных
+1. Очистку таблицы диспетчеризвции
+2. Отсоединение от базы данных
 "
-  (clean-dispatch-table)
-  (stop *gost-acceptor*)
-  (disconnect-toplevel)) ;; Postmaster disconnection
-
-(defun clean-dispatch-table()
-  (if (> (length *dispatch-table*) 1)
-      (setf *dispatch-table* (last *dispatch-table*)))
-  *dispatch-table*)
-
+  (clean-dispatch-table '*mnas-vse-gost-dispatch-table*)
+  (disconnect-toplevel) ;; Postmaster disconnection
+  )
 
 (defun do-show-gost-table (name-str designation-str description-str)
   "Выполняет формирование содержимого таблицы содержащей в каждой своей строке:
@@ -61,7 +47,8 @@
 	  (:td (:a :href "http://mnasoft.ddns.net/"             (:img :src "/static/images/MNASoft.png" :alt "Archlinux"   :class "logo" :height "28px")))
 	  (:td :width "300px" "")
 	  (:td (:audio :controls "controls" ;; :autoplay "autoplay"
-		       (:source  :src "/static/audio/dzhejms_last_-_odinokij_pastuh_(zvukoff.ru).mp3" :type "audio/mpeg")))))
+		       (:source  :src "/static/audio/Vicente Amigo Canción de Laura- DESTINO.mp3" :type "audio/mpeg")))))
+;;;;	"/static/audio/dzhejms_last_-_odinokij_pastuh_(zvukoff.ru).mp3"
 	(:hr))
        (:main ,@body)
        (:footer 
@@ -79,31 +66,19 @@
 		  (:a :href "http://weitz.de/hunchentoot/"           (:img :src "/static/images/hunchentoot11.png"  :alt "Hunchentoot" :class "logo" :height "28px")))))
 	(:hr))))))
 
-(defmacro define-url-fn ((name) &body body)
-  `(progn (defun ,name() ,@body)
-     (push (create-prefix-dispatcher ,(format nil "/~(~a~)" name) ',name) *dispatch-table*)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (define-easy-handler (uri-vsegost :uri "/") ()
       (redirect "/select"))
 
 (defun gost-start()
-  (connect-toplevel "namatv" "namatv" mnas-passwd:POSTGRESS@MNASOFT-PI "localhost") ;; Postmaster connaction
-  (setf *gost-acceptor* (start (make-instance 'easy-acceptor :port 8000)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
-  (define-url-fn (show)
+;;;;  (connect-toplevel "namatv" "namatv" mnas-passwd:POSTGRESS@MNASOFT-PI "localhost") ;; Postmaster connaction
+  (define-url-fn (show *mnas-vse-gost-dispatch-table*)
     (let ((name (parameter "name"))
 	  (disignation (parameter "disignation"))
 	  (description (parameter "description")))
       (standard-page
 	  (:title "MNASoft. Отбор ГОСТов")
-	(str(do-show-gost-table name disignation description)))
-;;;;(unless (or (null name) (zerop (length name))) (add-game name))
-;;;;(redirect "/retro-games.htm")
-      ))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
-  (define-url-fn (select)
+	(str(do-show-gost-table name disignation description)))))
+  (define-url-fn (select *mnas-vse-gost-dispatch-table*)
     (standard-page
 	(:title "MNASoft. Отбор ГОСТов")
       (:h1 "Отбор ГОСТов")
@@ -114,21 +89,25 @@
 	      (:tr (:td "Обозначение")(:td (:input :type "text" :name "disignation" :class "txt" :style "width:30em" )))
 	      (:tr (:td "Наименование")(:td (:input :type "text" :name "name" :class "txt" :style "width:30em")))
 	      (:tr (:td "Описание")(:td (:input :type "text" :name "description" :class "txt" :style "width:30em"))))
-	     (:p (:input :type "submit" :value "Отобрать" :class "btn")))))
-  )
+	     (:p (:input :type "submit" :value "Отобрать" :class "btn"))))))
 
 (gost-start)
 
+(acceptor-document-root *mnas-site-acceptor*)
+
 ;;;;(clean-dispatch-table)
 
-;;;;(progn (gost-stop)(gost-start))
+;;;;(progn (gost-stop) (gost-start))
 
-;;;;(gost-stop)
+;;;; (mnas-site-start)
+
+;;;; (mnas-site-stop)
+
+;;;; *mnas-vse-gost-dispatch-table*
+
+;;;; *dispatch-table*
 
 ;Testing;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;(do-show-gost-table "" "2.305" "")
-;;;;(list-show-gost-table "" "2.305" "")
 
 (defun list-show-gost-table (name-str designation-str description-str)
   (let ((rez nil))
