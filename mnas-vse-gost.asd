@@ -7,5 +7,7 @@
   :serial t
   :depends-on (#:postmodern #:hunchentoot #:cl-who #:mnas-string #:mnas-site #:mnas-passwd)
   :components ((:file "package")
-               (:file "mnas-vse-gost")))
+	       (:file "mnas-vse-gost-audio")
+               (:file "mnas-vse-gost")
+	       ))
 
