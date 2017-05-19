@@ -15,7 +15,6 @@
 2. Отсоединение от базы данных
 "
   (clean-dispatch-table '*mnas-vse-gost-dispatch-table*)
-
   (mnas-disconnect-toplevel))
 
 (defun do-show-gost-table (name-str designation-str description-str)
