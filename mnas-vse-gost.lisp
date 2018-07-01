@@ -85,7 +85,8 @@
 	(designation name local_path)
       (setf rez (cons (list (concatenate 'string "http://wp7580.ddns.mksat.net/~namatv/2015-12-21-vsegost.com/" local_path "gost.pdf")
 			    designation
-			    name) rez)))
+			    name)
+		      rez)))
     rez))
 
 
