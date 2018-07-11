@@ -35,8 +35,19 @@
 					  (concatenate 'string *vse-gost-root* local_path "gost.pdf") designation name)))))
     (format nil "<table>~A</table>~%<p>Всего найдено ~A записей</p>" (get-output-stream-string out) lines)))
 
-(define-easy-handler (uri-vsegost :uri "/") ()
-  (redirect "/vsegost/select"))
+;;;; (define-easy-handler (uri-vsegost :uri "/")        ()  (redirect "/vsegost/select"))
+
+(define-easy-handler (uri-/                 :uri "/")
+    ()  (redirect "/vsegost/select"))
+
+(define-easy-handler (uri-/vsegost          :uri "/vsegost")
+    ()  (redirect "/vsegost/select"))
+
+(define-easy-handler (uri-/vsegost/         :uri "/vsegost/")
+    ()  (redirect "/vsegost/select"))
+
+(define-easy-handler (uri-/vsegost/select/  :uri "/vsegost/select/")
+    ()  (redirect "/vsegost/select"))
 
 (defun gost-start()
   (mnas-site-start)
@@ -60,6 +71,8 @@
 	(str(do-show-gost-table name disignation description)))))
   )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;; (acceptor-document-root *mnas-site-acceptor*)
 
 ;;;; (progn (gost-stop) (gost-start))
@@ -74,8 +87,6 @@
 
 ;;;;Testing;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
 (defun list-show-gost-table (name-str designation-str description-str)
   (let ((rez nil))
     (doquery (:select 'designation 'name 'local_path :from 'gost :where
@@ -88,5 +99,3 @@
 			    name)
 		      rez)))
     rez))
-
-
