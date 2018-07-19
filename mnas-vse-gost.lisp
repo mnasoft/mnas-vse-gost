@@ -37,17 +37,13 @@
 
 ;;;; (define-easy-handler (uri-vsegost :uri "/")        ()  (redirect "/vsegost/select"))
 
-(define-easy-handler (uri-/                 :uri "/")
-    ()  (redirect "/vsegost/select"))
+(define-easy-handler (uri-/                 :uri "/") ()  (redirect "/vsegost/select"))
 
-(define-easy-handler (uri-/vsegost          :uri "/vsegost")
-    ()  (redirect "/vsegost/select"))
+(define-easy-handler (uri-/vsegost          :uri "/vsegost") ()  (redirect "/vsegost/select"))
 
-(define-easy-handler (uri-/vsegost/         :uri "/vsegost/")
-    ()  (redirect "/vsegost/select"))
+(define-easy-handler (uri-/vsegost/         :uri "/vsegost/") ()  (redirect "/vsegost/select"))
 
-(define-easy-handler (uri-/vsegost/select/  :uri "/vsegost/select/")
-    ()  (redirect "/vsegost/select"))
+(define-easy-handler (uri-/vsegost/select/  :uri "/vsegost/select/") ()  (redirect "/vsegost/select"))
 
 (defun gost-start()
   (mnas-site-start)
@@ -74,15 +70,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;; (acceptor-document-root *mnas-site-acceptor*)
-
 ;;;; (progn (gost-stop) (gost-start))
-
 ;;;; (mnas-site-start)
-
 ;;;; (mnas-site-stop)
-
 ;;;; *mnas-vse-gost-dispatch-table*
-
 ;;;; *dispatch-table*
 
 ;;;;Testing;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
