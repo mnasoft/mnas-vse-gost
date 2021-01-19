@@ -27,9 +27,9 @@
 	(lines 0))
     (setf lines (second (multiple-value-list
 			 (doquery (:select 'designation 'name 'local_path :from 'gost :where
-					   (:and (:ilike 'name (string-prepare-to-query name-str))
-						 (:ilike 'designation (string-prepare-to-query designation-str))
-						 (:ilike 'description (string-prepare-to-query description-str))))
+					   (:and (:ilike 'name (mnas-string:prepare-to-query name-str))
+						 (:ilike 'designation (mnas-string:prepare-to-query designation-str))
+						 (:ilike 'description (mnas-string:prepare-to-query description-str))))
 				  (designation name local_path)
 				  (format out "<tr><td><a href='~A'>~A</a></td><td>~A</td></tr>~%"
 					  (concatenate 'string *vse-gost-root* local_path "gost.pdf") designation name)))))
@@ -81,9 +81,9 @@
 (defun list-show-gost-table (name-str designation-str description-str)
   (let ((rez nil))
     (doquery (:select 'designation 'name 'local_path :from 'gost :where
-		      (:and (:ilike 'name (string-prepare-to-query name-str))
-			    (:ilike 'designation (string-prepare-to-query designation-str))
-			    (:ilike 'description (string-prepare-to-query description-str))))
+		      (:and (:ilike 'name (mnas-string:prepare-to-query name-str))
+			    (:ilike 'designation (mnas-string:prepare-to-query designation-str))
+			    (:ilike 'description (mnas-string:prepare-to-query description-str))))
 	(designation name local_path)
       (setf rez (cons (list (concatenate 'string "http://wp7580.ddns.mksat.net/~namatv/2015-12-21-vsegost.com/" local_path "gost.pdf")
 			    designation
