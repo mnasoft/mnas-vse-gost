@@ -1,6 +1,6 @@
 ;;;; mnas-vse-gost-audio.lisp
 
-(in-package #:mnas-vse-gost)
+(in-package :mnas-vse-gost)
 ;;; "mnas-vse-gost" goes here. Hacks and glory await!
 
 (defparameter *random-audio-state* (make-random-state ))

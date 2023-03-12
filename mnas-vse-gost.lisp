@@ -1,6 +1,6 @@
 ;;;; mnas-vse-gost.lisp
 
-(in-package #:mnas-vse-gost)
+(in-package :mnas-vse-gost)
 ;;; "mnas-vse-gost" goes here. Hacks and glory await!
 
 (defparameter *vse-gost-root* "/2015-12-21-vsegost.com/"
